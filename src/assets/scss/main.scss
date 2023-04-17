@@ -1,0 +1,21 @@
+:root {
+    --bs-font-sans-serif: 'Open Sans', sans-serif !important;
+    --bs-body-bg: #f0f0f0 !important;
+    --bs-primary: #e76f51 !important;
+    --bs-primary-rgb: 231, 111, 81 !important;
+}
+
+body {
+    min-width: 320px;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #e76f51 !important;
+    --bs-btn-border-color: #e76f51 !important;
+    --bs-btn-hover-border-color: #e76f51 !important;
+    --bs-btn-hover-bg: #e76f51 !important;
+    --bs-btn-active-bg: #e76f51 !important;
+    --bs-btn-active-border-color: #e76f51 !important;
+    --bs-btn-disabled-color: #e76f51 !important;
+    --bs-btn-disabled-border-color: #e76f51 !important;
+}
