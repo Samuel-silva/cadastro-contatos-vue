@@ -4,37 +4,26 @@
     <main-component>
       <div class="d-flex justify-content-sm-between flex-column flex-sm-row">
         <h2>{{ txtTitle }}</h2>
-
-        <router-link
-          class="btn btn-success mt-sm-0 mt-2 align-self-end align-self-sm-center"
-          :to="{ name: 'new-edit-register' }"
-        >
-          <span class="pe-3">{{ txtBtn }}</span>
-          <b-icon icon="person-plus" />
-        </router-link>
       </div>
     </main-component>
   </div>
 </template>
 
 <script>
-import { BIcon } from 'bootstrap-vue'
 import HeaderComponent from '@/components/HeaderComponent'
 import MainComponent from '@/components/MainComponent'
 
 export default {
-  name: 'HomeView',
+  name: 'FormView',
 
   components: {
-    BIcon,
     HeaderComponent,
     MainComponent
   },
 
   data() {
     return {
-      txtTitle: "Seus cadastrados",
-      txtBtn: "Adicionar"
+      txtTitle: "Novo cadastro",
     }
   },
 }

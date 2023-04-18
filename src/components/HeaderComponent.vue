@@ -1,7 +1,7 @@
 <template>
   <header :class="`header ${defaultCssClass}`">
     <b-container class="py-xl-5 py-lg-4 py-md-3 py-sm-2">
-      <h1 class="py-5">{{ msg }}</h1>
+      <h1 class="py-5">{{ defaultMsg }}</h1>
     </b-container>
   </header>
 </template>
@@ -19,7 +19,7 @@ export default {
   props: {
     msg: {
       type: String,
-      required: true,
+      default: ''
     },
     cssClassName: {
       type: String,
@@ -31,6 +31,11 @@ export default {
     defaultCssClass() {
       if (!this.cssClassName) return 'bg-primary text-white';
       return this.cssClassName;
+    },
+
+    defaultMsg() {
+      if (!this.msg) return 'Cadastro Rápido';
+      return this.msg;
     }
   },
 }
