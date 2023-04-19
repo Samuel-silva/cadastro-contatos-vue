@@ -13,6 +13,7 @@
           <b-icon icon="person-plus" />
         </router-link>
       </div>
+      <list-contacts />
     </main-component>
     <footer-component />
   </div>
@@ -23,6 +24,7 @@ import { BIcon } from 'bootstrap-vue'
 
 import FooterComponent from '@/components/FooterComponent'
 import HeaderComponent from '@/components/HeaderComponent'
+import ListContacts from '@/components/ListContacts'
 import MainComponent from '@/components/MainComponent'
 
 export default {
@@ -32,7 +34,8 @@ export default {
     BIcon,
     FooterComponent,
     HeaderComponent,
-    MainComponent
+    ListContacts,
+    MainComponent,
   },
 
   data() {
