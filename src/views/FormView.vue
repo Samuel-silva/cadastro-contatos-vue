@@ -58,20 +58,20 @@
               <b-col md="6">
                 <b-form-group
                   id="input-group-4"
-                  class="mt-3 input-cep"
+                  class="mt-3 input-zipcode"
                   label="CEP:"
                   label-for="input-4"
                 >
                   <b-form-input
-                    ref="cep"
+                    ref="zipcode"
                     id="input-4"
-                    v-model="form.cep"
+                    v-model="form.zipCode"
                     v-mask="'#####-###'"
                     required
-                    @change="getCEP"
+                    @change="queryCEP"
                   />
                   <b-icon
-                    v-if="cepLoading"
+                    v-if="zipCodeLoading"
                     animation="spin"
                     class="ms-1 text-info"
                     font-scale="2"
@@ -79,7 +79,7 @@
                   />
                 </b-form-group>
                 <small
-                  v-if="inputCepErro"
+                  v-if="inputZipCodeError"
                   class="text-danger"
                 >
                   O CEP deve conter 9 números.
@@ -95,7 +95,7 @@
             >
               <b-form-input
                 id="input-5"
-                v-model="form.logradouro"
+                v-model="form.address"
                 required
                 :disabled="inputDisabled"
               />
@@ -111,7 +111,7 @@
                 >
                   <b-form-input
                     id="input-6"
-                    v-model="form.numero"
+                    v-model="form.number"
                     required
                     :disabled="inputDisabled"
                   />
@@ -126,7 +126,7 @@
                 >
                   <b-form-input
                     id="input-7"
-                    v-model="form.complemento"
+                    v-model="form.complement"
                     :disabled="inputDisabled"
                   />
                 </b-form-group>
@@ -141,7 +141,7 @@
             >
               <b-form-input
                 id="input-8"
-                v-model="form.bairro"
+                v-model="form.neighborhood"
                 required
                 :disabled="inputDisabled"
               />
@@ -157,7 +157,7 @@
                 >
                   <b-form-input
                     id="input-9"
-                    v-model="form.localidade"
+                    v-model="form.city"
                     required
                     :disabled="inputDisabled"
                   />
@@ -172,7 +172,7 @@
                 >
                   <b-form-input
                     id="input-8"
-                    v-model="form.uf"
+                    v-model="form.state"
                     required
                     :disabled="inputDisabled"
                   />
@@ -184,13 +184,36 @@
           </b-form>
         </b-col>
       </b-row>
-      <b-modal />
+      <b-modal
+        v-model="modalFinished"
+        hideHeaderClose
+      >
+        <p v-if="errorSaving" v-html="txtModalFinishedError" />
+        <p v-else v-html="txtModalFinishedSuccess" />
+
+        <template #modal-footer>
+          <b-button
+            variant="success"
+            @click="fillAgain(!errorSaving)"
+          >
+            Sim
+          </b-button>
+          <b-button
+            variant="primary"
+            to="/"
+          >
+            Não, ir para tela inicial
+          </b-button>
+        </template>
+      </b-modal>
     </main-component>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import ApiCep from '@/api/cep'
+import ApiContacts from '@/api/contacts'
+
 import { mask } from 'vue-the-mask'
 import { BButton, BCol, BForm, BIcon, BModal, BRow } from 'bootstrap-vue'
 
@@ -215,54 +238,82 @@ export default {
 
   data() {
     return {
-      cepLoading: false,
+      errorSaving: false,
       form: {
         name: '',
         email: '',
         phone: '',
-        cep: '',
-        numero: '',
-        logradouro: '',
-        complemento: '',
-        bairro: '',
-        localidade: '',
-        uf: '',
+        zipCode: '',
+        number: '',
+        address: '',
+        complement: '',
+        neighborhood: '',
+        city: '',
+        state: '',
       },
-      inputCepErro: false,
+      inputZipCodeError: false,
       inputDisabled: true,
+      modalFinished: false,
       txtTitle: "Novo cadastro",
       txtModalNotFound: "O CEP não foi encontrado, favor preencher os campos de endereço.",
-      txtModalErro: "Houve um erro ao carregar as informações do endereço, favor preencher os campos de endereço."
+      txtModalError: "Houve um erro ao carregar as informações do endereço, favor preencher os campos de endereço.",
+      txtModalFinishedError: "Houve um erro ao salvar o contato.<br />Deseja adicionar novamente o contato?",
+      txtModalFinishedSuccess: "Contato adicionado com sucesso.<br />Deseja adicionar um novo contato?",
+      zipCodeLoading: false,
     }
   },
 
   methods: {
-    onSubmit(event) {
-      event.preventDefault()
-      alert(JSON.stringify(this.form))
+    clearForm() {
+      const objClear = Object.keys(this.form).reduce((acc, curr) => ({...acc, [curr]: ""}), {});
+      this.inputDisabled = true;
+      this.form = objClear;
     },
 
-    getCEP(number) {
-      const cep = number.replace(/-/g, '');
-      if (cep.length != 8) {
-        this.$refs.cep.focus();
-        this.inputCepErro = true;
+    async createNewContact(form) {
+      await ApiContacts.newContact(form)
+        .then()
+        .catch(() => {
+          this.errorSaving = true;
+        })
+        .finally(() => {
+          this.modalFinished = true;
+        })
+    },
+
+    fillAgain(clear) {
+      if (clear) {
+        this.clearForm();
+      }
+      this.modalFinished = false;
+    },
+
+    onSubmit(event) {
+      event.preventDefault();
+      this.createNewContact(this.form);
+    },
+
+    async queryCEP(number) {
+      const numberFormart = number.replace(/-/g, '');
+      if (numberFormart.length != 8) {
+        this.$refs.zipcode.focus();
+        this.inputZipCodeError = true;
       } else {
-        this.cepLoading = true;
-        axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+        this.zipCodeLoading = true;
+        await ApiCep.queryCep(numberFormart)
           .then((resp) => {
             if (resp.data?.erro) {
               this.showModal(this.txtModalNotFound);
             } else {
-              const { logradouro, bairro, localidade, uf } = resp.data;
-              Object.assign(this.form, { logradouro, bairro, localidade, uf });
+              const { logradouro: address, bairro: neighborhood, localidade: city, uf: state } = resp.data;
+              Object.assign(this.form, { address, neighborhood, city, state });
             }
           })
           .catch(() => {
-            this.showModal(this.txtModalErro);
+            this.showModal(this.txtModalError);
           })
           .finally(() => {
-            this.cepLoading = false;
+            this.zipCodeLoading = false;
             this.inputDisabled = false;
           })
       }
@@ -279,7 +330,7 @@ export default {
 </script>
 
 <style lang="scss">
-.input-cep {
+.input-zipcode {
   > div {
     align-items: center;
     display: flex
