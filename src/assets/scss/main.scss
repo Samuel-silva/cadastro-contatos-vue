@@ -7,6 +7,13 @@
 
 body {
     min-width: 320px;
+    min-height: 100vh;
+}
+
+#app {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 50px;
 }
 
 .btn-outline-primary {
@@ -18,4 +25,12 @@ body {
     --bs-btn-active-border-color: #e76f51 !important;
     --bs-btn-disabled-color: #e76f51 !important;
     --bs-btn-disabled-border-color: #e76f51 !important;
+}
+
+.btn-primary {
+    @extend .btn-outline-primary;
+    --bs-btn-color: #fff !important;
+    --bs-btn-bg: #e76f51 !important;
+    --bs-btn-hover-bg: #914633 !important;
+    --bs-btn-hover-border-color: #914633 !important;
 }

@@ -2,6 +2,7 @@
   <div>
     <header-component />
     <main-component>
+      <bread-crump title="Novo cadastro"/>
       <div class="d-flex justify-content-sm-between flex-column flex-sm-row">
         <h2>{{ txtTitle }}</h2>
       </div>
@@ -193,13 +194,13 @@
 
         <template #modal-footer>
           <b-button
-            variant="success"
+            variant="primary"
             @click="fillAgain(!errorSaving)"
           >
             Sim
           </b-button>
           <b-button
-            variant="primary"
+            variant="success"
             to="/"
           >
             Não, ir para tela inicial
@@ -207,6 +208,7 @@
         </template>
       </b-modal>
     </main-component>
+    <footer-component />
   </div>
 </template>
 
@@ -217,6 +219,8 @@ import ApiContacts from '@/api/contacts'
 import { mask } from 'vue-the-mask'
 import { BButton, BCol, BForm, BIcon, BModal, BRow } from 'bootstrap-vue'
 
+import BreadCrump from '@/components/BreadCrump'
+import FooterComponent from '@/components/FooterComponent'
 import HeaderComponent from '@/components/HeaderComponent'
 import MainComponent from '@/components/MainComponent'
 
@@ -230,6 +234,8 @@ export default {
     BIcon,
     BModal,
     BRow,
+    BreadCrump,
+    FooterComponent,
     HeaderComponent,
     MainComponent
   },

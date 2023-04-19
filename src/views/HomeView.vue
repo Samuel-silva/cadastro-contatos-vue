@@ -14,11 +14,14 @@
         </router-link>
       </div>
     </main-component>
+    <footer-component />
   </div>
 </template>
 
 <script>
 import { BIcon } from 'bootstrap-vue'
+
+import FooterComponent from '@/components/FooterComponent'
 import HeaderComponent from '@/components/HeaderComponent'
 import MainComponent from '@/components/MainComponent'
 
@@ -27,6 +30,7 @@ export default {
 
   components: {
     BIcon,
+    FooterComponent,
     HeaderComponent,
     MainComponent
   },
