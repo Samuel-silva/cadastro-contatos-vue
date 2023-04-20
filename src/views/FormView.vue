@@ -71,12 +71,10 @@
                     required
                     @change="queryCEP"
                   />
-                  <b-icon
+                  <b-spinner
                     v-if="zipCodeLoading"
-                    animation="spin"
                     class="ms-1 text-info"
-                    font-scale="2"
-                    icon="arrow-repeat"
+                    variant="dark"
                   />
                 </b-form-group>
                 <small
@@ -217,7 +215,7 @@ import ApiCep from '@/api/cep'
 import ApiContacts from '@/api/contacts'
 
 import { mask } from 'vue-the-mask'
-import { BButton, BCol, BForm, BIcon, BModal, BRow } from 'bootstrap-vue'
+import { BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
 
 import BreadCrump from '@/components/BreadCrump'
 import FooterComponent from '@/components/FooterComponent'
@@ -231,9 +229,9 @@ export default {
     BButton,
     BCol,
     BForm,
-    BIcon,
     BModal,
     BRow,
+    BSpinner,
     BreadCrump,
     FooterComponent,
     HeaderComponent,
@@ -277,6 +275,8 @@ export default {
     },
 
     async createNewContact(form) {
+      this.errorSaving = false;
+
       await ApiContacts.newContact(form)
         .then()
         .catch(() => {
