@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 const state = {
   contacts: [],
+  contactsErrorApi: false,
   listLoading: true,
 }
 const getters = {
@@ -37,12 +38,24 @@ const mutations = {
   SET_LIST_LOADING(state, payload) {
     state.listLoading = payload;
   },
+
+  SET_CONTACTS_ERROR_API(state, payload) {
+    state.contactsErrorApi = payload;
+  },
 }
 const actions = {
   getAllContacts: async ({ commit }) => {
-    const response = await ApiContacts.getAllContacts()
-    commit('SET_LIST_LOADING', false);
-    commit('SET_CONTACTS', response.data);
+    commit('SET_CONTACTS_ERROR_API', false);
+    await ApiContacts.getAllContacts()
+      .then((response) => {
+        commit('SET_CONTACTS', response.data);
+      })
+      .catch(() => {
+        commit('SET_CONTACTS_ERROR_API', true);
+      })
+      .finally(() => {
+        commit('SET_LIST_LOADING', false);
+      })
   },
 
   removeContact({ commit }, payload) {

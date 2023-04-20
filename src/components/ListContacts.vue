@@ -7,45 +7,48 @@
 				type="input"
 			/>
 		</template>
-		<b-list-group v-else>
-			<b-list-group-item
-				v-for="item in namesList"
-				:key="item.id"
-				class="d-flex justify-content-between align-items-center py-3"
-			>
-				<p class="mb-0">
-					{{ item.name }}
-				</p>
-				<div class="pl-2 d-flex">
-					<b-button
-						variant="outline-success"
-						v-b-tooltip.hover.v-success
-						title="Visualizar"
-						@click="openModalDetail(item.id)"
-					>
-						<b-icon icon="eye" />
-					</b-button>
-					<b-button
-						variant="outline-primary"
-						class="mx-2"
-						v-b-tooltip.hover.v-primary
-						title="Editar"
-						:to="`edit/${item.id}`"
-					>
-						<b-icon icon="pencil-square" />
-					</b-button>
-					<b-button
-						variant="outline-danger"
-						v-b-tooltip.hover.v-danger
-						title="Excluir"
-						@click="openModalDelete(item.id)"
-					>
-						<b-icon icon="trash" />
-					</b-button>
-				</div>
+		<template v-else>
+			<b-list-group v-if="contacts.length > 0">
+				<b-list-group-item
+					v-for="item in namesList"
+					:key="item.id"
+					class="d-flex justify-content-between align-items-center py-3"
+				>
+					<p class="mb-0">
+						{{ item.name }}
+					</p>
+					<div class="pl-2 d-flex">
+						<b-button
+							variant="outline-success"
+							v-b-tooltip.hover.v-success
+							title="Visualizar"
+							@click="openModalDetail(item.id)"
+						>
+							<b-icon icon="eye" />
+						</b-button>
+						<b-button
+							variant="outline-primary"
+							class="mx-2"
+							v-b-tooltip.hover.v-primary
+							title="Editar"
+							:to="`edit/${item.id}`"
+						>
+							<b-icon icon="pencil-square" />
+						</b-button>
+						<b-button
+							variant="outline-danger"
+							v-b-tooltip.hover.v-danger
+							title="Excluir"
+							@click="openModalDelete(item.id)"
+						>
+							<b-icon icon="trash" />
+						</b-button>
+					</div>
 
-			</b-list-group-item>
-		</b-list-group>
+				</b-list-group-item>
+			</b-list-group>
+			<not-found-contacts v-else />
+		</template>
 
 		<b-modal
 			v-model="modalDelete"
@@ -88,6 +91,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import { BButton, BIcon, BListGroup, BModal, BSkeleton, VBTooltip } from 'bootstrap-vue'
 
 const ModalDetails = () => import('./ModalDetails.vue');
+const NotFoundContacts = () => import('./NotFoundContacts.vue');
 
 export default {
 	name: 'ListContacts',
@@ -99,6 +103,7 @@ export default {
 		BModal,
 		BSkeleton,
 		ModalDetails,
+		NotFoundContacts,
   },
 
 	directives: { 'b-tooltip': VBTooltip },
@@ -110,6 +115,7 @@ export default {
 			detailId: 0,
 			idContactDelete: 0,
 			modalDelete: false,
+			noContacts: false,
 			txtModalDelete: "Tem certeza que quer apagar este contato?",
 			txtModalDeleteError: "Não foi possível excluir o contato, tente novamente."
 		}
@@ -118,6 +124,14 @@ export default {
 	computed: {
     ...mapGetters(['namesList']),
     ...mapState(['contacts', 'listLoading']),
+	},
+
+	watch: {
+		listLoading(value) {
+			if (value === false && this.contacts.length === 0) {
+				this.noContacts = true;
+			}
+		}
 	},
 
 	created () {

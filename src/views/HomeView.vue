@@ -6,6 +6,7 @@
         <h2>{{ txtTitle }}</h2>
 
         <router-link
+          v-if="contacts.length > 0"
           class="btn btn-success mt-sm-0 mt-2 align-self-end align-self-sm-center"
           :to="{ name: 'new-register' }"
         >
@@ -21,6 +22,7 @@
 
 <script>
 import { BIcon } from 'bootstrap-vue'
+import { mapState } from 'vuex';
 
 import FooterComponent from '@/components/FooterComponent'
 import HeaderComponent from '@/components/HeaderComponent'
@@ -44,5 +46,9 @@ export default {
       txtBtn: "Adicionar"
     }
   },
+
+  computed: {
+    ...mapState(['contacts']),
+	},
 }
 </script>
