@@ -9,7 +9,7 @@
           class="btn btn-success mt-sm-0 mt-2 align-self-end align-self-sm-center"
           :to="{ name: 'new-edit-register' }"
         >
-          <span class="pe-3">{{ txtBtn }}</span>
+          <span class="pr-3">{{ txtBtn }}</span>
           <b-icon icon="person-plus" />
         </router-link>
       </div>

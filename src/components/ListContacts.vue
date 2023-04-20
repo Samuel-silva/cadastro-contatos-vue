@@ -16,10 +16,10 @@
 				<p class="mb-0">
 					{{ item.name }}
 				</p>
-				<div class="ps-2 d-flex">
+				<div class="pl-2 d-flex">
 					<b-button
 						variant="outline-success"
-						v-b-tooltip.v-success
+						v-b-tooltip.hover.v-success
 						title="Visualizar"
 					>
 						<b-icon icon="eye" />
@@ -27,14 +27,14 @@
 					<b-button
 						variant="outline-primary"
 						class="mx-2"
-						v-b-tooltip.v-primary
+						v-b-tooltip.hover.v-primary
 						title="Editar"
 					>
 						<b-icon icon="pencil-square" />
 					</b-button>
 					<b-button
 						variant="outline-danger"
-						v-b-tooltip.v-danger
+						v-b-tooltip.hover.v-danger
 						title="Excluir"
 						@click="openModalDelete(item.id)"
 					>

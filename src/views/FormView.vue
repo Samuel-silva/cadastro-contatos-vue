@@ -16,6 +16,7 @@
               label-for="input-1"
             >
               <b-form-input
+                ref="nameInput"
                 id="input-1"
                 v-model="form.name"
                 type="text"
@@ -73,8 +74,8 @@
                   />
                   <b-spinner
                     v-if="zipCodeLoading"
-                    class="ms-1 text-info"
-                    variant="dark"
+                    class="flex-shrink-0 ml-2"
+                    variant="info"
                   />
                 </b-form-group>
                 <small
@@ -96,7 +97,6 @@
                 id="input-5"
                 v-model="form.address"
                 required
-                :disabled="inputDisabled"
               />
             </b-form-group>
 
@@ -112,7 +112,6 @@
                     id="input-6"
                     v-model="form.number"
                     required
-                    :disabled="inputDisabled"
                   />
                 </b-form-group>
               </b-col>
@@ -126,7 +125,6 @@
                   <b-form-input
                     id="input-7"
                     v-model="form.complement"
-                    :disabled="inputDisabled"
                   />
                 </b-form-group>
               </b-col>
@@ -142,7 +140,6 @@
                 id="input-8"
                 v-model="form.neighborhood"
                 required
-                :disabled="inputDisabled"
               />
             </b-form-group>
 
@@ -158,7 +155,6 @@
                     id="input-9"
                     v-model="form.city"
                     required
-                    :disabled="inputDisabled"
                   />
                 </b-form-group>
               </b-col>
@@ -173,19 +169,33 @@
                     id="input-8"
                     v-model="form.state"
                     required
-                    :disabled="inputDisabled"
                   />
                 </b-form-group>
               </b-col>
             </b-row>
 
-            <b-button type="submit" variant="primary" class="mt-4">Cadastrar</b-button>
+            <b-button
+              type="submit"
+              variant="primary"
+              class="mt-4"
+              :disabled="saveLoading"
+            >
+              <template v-if="saveLoading">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                Salvando...
+              </template>
+              <template v-else>
+                Cadastrar
+              </template>
+            </b-button>
           </b-form>
         </b-col>
       </b-row>
+
       <b-modal
         v-model="modalFinished"
         hideHeaderClose
+        noCloseOnEsc
       >
         <p v-if="errorSaving" v-html="txtModalFinishedError" />
         <p v-else v-html="txtModalFinishedSuccess" />
@@ -256,8 +266,8 @@ export default {
         state: '',
       },
       inputZipCodeError: false,
-      inputDisabled: true,
       modalFinished: false,
+      saveLoading: false,
       txtTitle: "Novo cadastro",
       txtModalNotFound: "O CEP não foi encontrado, favor preencher os campos de endereço.",
       txtModalError: "Houve um erro ao carregar as informações do endereço, favor preencher os campos de endereço.",
@@ -270,12 +280,12 @@ export default {
   methods: {
     clearForm() {
       const objClear = Object.keys(this.form).reduce((acc, curr) => ({...acc, [curr]: ""}), {});
-      this.inputDisabled = true;
       this.form = objClear;
     },
 
     async createNewContact(form) {
       this.errorSaving = false;
+      this.saveLoading = true;
 
       await ApiContacts.newContact(form)
         .then()
@@ -284,6 +294,7 @@ export default {
         })
         .finally(() => {
           this.modalFinished = true;
+          this.saveLoading = false;
         })
     },
 
@@ -292,6 +303,8 @@ export default {
         this.clearForm();
       }
       this.modalFinished = false;
+      console.log(this.$refs.nameInput);
+      this.$refs.nameInput.focus();
     },
 
     onSubmit(event) {
@@ -320,7 +333,6 @@ export default {
           })
           .finally(() => {
             this.zipCodeLoading = false;
-            this.inputDisabled = false;
           })
       }
     },
