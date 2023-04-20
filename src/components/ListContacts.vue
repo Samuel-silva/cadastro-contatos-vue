@@ -87,7 +87,7 @@ import ApiContacts from '@/api/contacts'
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { BButton, BIcon, BListGroup, BModal, BSkeleton, VBTooltip } from 'bootstrap-vue'
 
-import ModalDetails from './ModalDetails.vue';
+const ModalDetails = () => import('./ModalDetails.vue');
 
 export default {
 	name: 'ListContacts',
