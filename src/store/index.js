@@ -22,7 +22,12 @@ const getters = {
     })
 
     return names
-  }
+  },
+
+  detailContact: (state) => (id) => {
+    const detail = state.contacts.filter((contact) => contact.id === id);
+    return detail[0];
+  },
 }
 const mutations = {
   SET_CONTACTS(state, payload) {

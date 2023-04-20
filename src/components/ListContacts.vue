@@ -21,6 +21,7 @@
 						variant="outline-success"
 						v-b-tooltip.hover.v-success
 						title="Visualizar"
+						@click="openModalDetail(item.id)"
 					>
 						<b-icon icon="eye" />
 					</b-button>
@@ -69,6 +70,13 @@
 				</b-button>
 			</template>
 		</b-modal>
+
+		<modal-details
+			v-if="detailModal"
+			:id="detailId"
+			:showModal="detailModal"
+			@change="value => detailModal = value"
+		/>
 	</div>
 </template>
 
@@ -77,6 +85,9 @@ import ApiContacts from '@/api/contacts'
 
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { BButton, BIcon, BListGroup, BModal, BSkeleton, VBTooltip } from 'bootstrap-vue'
+
+import ModalDetails from './ModalDetails.vue';
+
 export default {
 	name: 'ListContacts',
 
@@ -86,6 +97,7 @@ export default {
 		BListGroup,
 		BModal,
 		BSkeleton,
+		ModalDetails,
   },
 
 	directives: { 'b-tooltip': VBTooltip },
@@ -93,6 +105,8 @@ export default {
 	data() {
 		return {
 			deleteError: false,
+			detailModal: false,
+			detailId: 0,
 			idContactDelete: 0,
 			modalDelete: false,
 			txtModalDelete: "Tem certeza que quer apagar este contato?",
@@ -134,6 +148,11 @@ export default {
 			this.deleteError = false;
 			this.modalDelete = true;
 			this.idContactDelete = id;
+		},
+
+		openModalDetail(id) {
+			this.detailModal = true;
+			this.detailId = id;
 		},
 	},
 }
