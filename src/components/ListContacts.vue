@@ -30,6 +30,7 @@
 						class="mx-2"
 						v-b-tooltip.hover.v-primary
 						title="Editar"
+						:to="`edit/${item.id}`"
 					>
 						<b-icon icon="pencil-square" />
 					</b-button>

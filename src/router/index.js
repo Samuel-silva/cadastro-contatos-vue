@@ -17,10 +17,18 @@ const routes = [
   },
   {
     path: '/new-register',
-    name: 'new-edit-register',
+    name: 'new-register',
     component: FormView,
     meta: {
       title: 'Cadastro Rápido - Novo cadastro',
+    },
+  },
+  {
+    path: '/edit/:id',
+    name: 'edit-register',
+    component: FormView,
+    meta: {
+      title: 'Cadastro Rápido - Editar cadastro',
     },
   },
   {
@@ -36,6 +44,12 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    return { x: 0, y: 0 };
+  },
   routes
 })
 

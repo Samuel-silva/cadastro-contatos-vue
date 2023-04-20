@@ -2,7 +2,7 @@
   <div>
     <header-component />
     <main-component>
-      <bread-crump title="Novo cadastro"/>
+      <bread-crump :title="txtTitle"/>
       <div class="d-flex justify-content-sm-between flex-column flex-sm-row">
         <h2>{{ txtTitle }}</h2>
       </div>
@@ -10,6 +10,14 @@
       <b-row class="justify-content-center pt-5">
         <b-col md="8">
           <b-form @submit="onSubmit">
+            <div v-if="loadingDataContact" class="loading-data d-flex justify-content-center pt-5">
+              <b-spinner
+                class="mt-5"
+                label="Loading"
+                style="width: 3rem; height: 3rem;"
+                variant="primary"
+              />
+            </div>
             <b-form-group
               id="input-group-1"
               label="Nome:"
@@ -185,7 +193,7 @@
                 Salvando...
               </template>
               <template v-else>
-                Cadastrar
+                {{ txtBtnSubmit }}
               </template>
             </b-button>
           </b-form>
@@ -224,6 +232,7 @@
 import ApiCep from '@/api/cep'
 import ApiContacts from '@/api/contacts'
 
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { mask } from 'vue-the-mask'
 import { BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
 
@@ -266,18 +275,60 @@ export default {
         state: '',
       },
       inputZipCodeError: false,
+      loadingDataContact: false,
       modalFinished: false,
       saveLoading: false,
-      txtTitle: "Novo cadastro",
       txtModalNotFound: "O CEP não foi encontrado, favor preencher os campos de endereço.",
       txtModalError: "Houve um erro ao carregar as informações do endereço, favor preencher os campos de endereço.",
-      txtModalFinishedError: "Houve um erro ao salvar o contato.<br />Deseja adicionar novamente o contato?",
-      txtModalFinishedSuccess: "Contato adicionado com sucesso.<br />Deseja adicionar um novo contato?",
       zipCodeLoading: false,
     }
   },
 
+  computed: {
+    ...mapGetters(['detailContact']),
+    ...mapState(['contacts']),
+
+    newRegister() {
+      return this.$route.name  === 'new-register';
+    },
+    txtTitle() {
+      return this.newRegister ? 'Novo cadastro' : 'Editar cadastro'
+    },
+    txtBtnSubmit() {
+      return this.newRegister ? 'Cadastrar' : 'Alterar'
+    },
+    txtModalFinishedError() {
+      return this.newRegister ?
+        "Houve um erro ao salvar o contato.<br />Deseja adicionar novamente o contato?" :
+        "Houve um erro ao alterar o contato.<br />Deseja tentar alterar novamente o contato?";
+    },
+    txtModalFinishedSuccess() {
+      return this.newRegister ?
+        "Contato adicionado com sucesso.<br />Deseja adicionar um novo contato?":
+        "Contato alterado com sucesso.<br />Deseja continuar na editando este contato?";
+    },
+  },
+
+  watch: {
+    contacts() {
+      this.getDetailContact(this.$route.params);
+    },
+  },
+
+  created () {
+    if (this.$route.name === 'edit-register') {
+      this.loadingDataContact = true;
+      if (this.contacts.length === 0) {
+        this.getAllContacts();
+      } else {
+        this.getDetailContact(this.$route.params);
+      }
+    }
+  },
+
   methods: {
+    ...mapActions(['getAllContacts']),
+
     clearForm() {
       const objClear = Object.keys(this.form).reduce((acc, curr) => ({...acc, [curr]: ""}), {});
       this.form = objClear;
@@ -298,18 +349,43 @@ export default {
         })
     },
 
+    async editContact(form) {
+      this.errorSaving = false;
+      this.saveLoading = true;
+
+      await ApiContacts.editContact(this.$route.params.id, form)
+        .then()
+        .catch(() => {
+          this.errorSaving = true;
+        })
+        .finally(() => {
+          this.modalFinished = true;
+          this.saveLoading = false;
+        })
+    },
+
     fillAgain(clear) {
-      if (clear) {
+      if (clear && this.newRegister) {
         this.clearForm();
       }
       this.modalFinished = false;
-      console.log(this.$refs.nameInput);
       this.$refs.nameInput.focus();
+    },
+
+    getDetailContact(id) {
+      const detail = this.detailContact(parseInt(id.id));
+      Object.assign(this.form, detail);
+      this.loadingDataContact = false;
     },
 
     onSubmit(event) {
       event.preventDefault();
-      this.createNewContact(this.form);
+
+      if (this.newRegister) {
+        this.createNewContact(this.form);
+      } else {
+        this.editContact(this.form);
+      }
     },
 
     async queryCEP(number) {
@@ -353,5 +429,17 @@ export default {
     align-items: center;
     display: flex
   }
+}
+</style>
+
+<style lang="scss" scope>
+.loading-data {
+  background: rgba(0, 0, 0, 0.1);
+  height: 100%;
+  left: -5px;
+  position: absolute;
+  top: -5px;
+  width: 100%;
+  z-index: 10;
 }
 </style>
