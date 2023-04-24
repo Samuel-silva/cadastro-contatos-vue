@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = "http://localhost:3000/"
+const baseURL = "https://run.mocky.io/v3/"
 
 const api = axios.create({
 	baseURL,
