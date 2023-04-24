@@ -390,6 +390,8 @@ export default {
 
     async queryCEP(number) {
       const numberFormart = number.replace(/-/g, '');
+      this.inputZipCodeError = false;
+
       if (numberFormart.length != 8) {
         this.$refs.zipcode.focus();
         this.inputZipCodeError = true;
