@@ -1,5 +1,10 @@
 # cadastro-clientes-vue
 
+Projeto de cadastro de contatos, sendo possível visualizar, cadastrar, editar e deletar o contato. Os dados são armazenados na API utilisando JSON Serve.
+
+É possível visualizar o build do site no link [GitHub](https://samuel-silva.github.io/cadastro-vue-build/). Este link é apenas um mock, não sendo possível editar, deletar e criar um novo contato.
+
+# Configuração do Vue
 ## Project setup
 ```
 npm install
@@ -20,5 +25,10 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# Configuração do JSON Server
+```
+cd db
+```
+```
+npm start
+```
