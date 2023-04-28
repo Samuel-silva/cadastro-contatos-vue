@@ -42,7 +42,7 @@ export default {
 
   data() {
     return {
-      txtTitle: "Seus cadastrados",
+      txtTitle: "Seus contatos cadastrados",
       txtBtn: "Adicionar"
     }
   },
