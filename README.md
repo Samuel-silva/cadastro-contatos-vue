@@ -5,9 +5,8 @@ Projeto de cadastro de contatos, no qual é possível visualizar, cadastrar, edi
 É possível visualizar o build do site no link [GitHub](https://samuel-silva.github.io/cadastro-contatos-vue-build/). Este link é com dados 'Mockados', não sendo possível editar, excluir e criar um novo contato.
 
 # Configuração do Vue
-
-Na raiz do projeto rodar:
 ## Project setup
+Na raiz do projeto rodar:
 ```
 npm install
 ```
