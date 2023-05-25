@@ -373,7 +373,7 @@ export default {
     },
 
     getDetailContact(id) {
-      const detail = this.detailContact(parseInt(id.id));
+      const detail = this.detailContact(id.id);
       Object.assign(this.form, detail);
       this.loadingDataContact = false;
     },

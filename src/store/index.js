@@ -48,7 +48,13 @@ const actions = {
     commit('SET_CONTACTS_ERROR_API', false);
     await ApiContacts.getAllContacts()
       .then((response) => {
-        commit('SET_CONTACTS', response.data);
+        const values = Object.values(response.data);
+        const keys = Object.keys(response.data);
+        const newData = [];
+        values.forEach((value, index) => {
+          newData.push({...value, id: keys[index]});
+        });
+        commit('SET_CONTACTS', newData);
       })
       .catch(() => {
         commit('SET_CONTACTS_ERROR_API', true);
