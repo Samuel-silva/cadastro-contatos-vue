@@ -168,13 +168,13 @@
               </b-col>
               <b-col md="4">
                 <b-form-group
-                  id="input-group-8"
+                  id="input-group-10"
                   class="mt-3"
                   label="Estado:"
-                  label-for="input-8"
+                  label-for="input-10"
                 >
                   <b-form-input
-                    id="input-8"
+                    id="input-10"
                     v-model="form.state"
                     required
                   />
@@ -205,8 +205,10 @@
         hideHeaderClose
         noCloseOnEsc
       >
-        <p v-if="errorSaving" v-html="txtModalFinishedError" />
-        <p v-else v-html="txtModalFinishedSuccess" />
+        <b-alert :variant="errorSaving ? 'danger': 'success'" show>
+          <p v-if="errorSaving" v-html="txtModalFinishedError" />
+          <p v-else v-html="txtModalFinishedSuccess" />
+        </b-alert>
 
         <template #modal-footer>
           <b-button
@@ -234,7 +236,7 @@ import ApiContacts from '@/api/contacts'
 
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { mask } from 'vue-the-mask'
-import { BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
+import { BAlert, BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
 
 import BreadCrump from '@/components/BreadCrump'
 import FooterComponent from '@/components/FooterComponent'
@@ -245,6 +247,7 @@ export default {
   name: 'FormView',
 
   components: {
+    BAlert,
     BButton,
     BCol,
     BForm,
