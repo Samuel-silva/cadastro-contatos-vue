@@ -2,7 +2,7 @@
 
 Projeto de cadastro de contatos, no qual é possível visualizar, cadastrar, editar e excluir um contato. Os dados são armazenados na API utilizando o JSON Server.
 
-É possível visualizar o build do site no link [GitHub](https://samuel-silva.github.io/cadastro-contatos-vue-build/). Este link é com dados 'Mockados', não sendo possível editar, excluir e criar um novo contato.
+É possível visualizar o build do site no link [GitHub](https://samuel-silva.github.io/cadastro-contatos-vue-build/). Este link é com API apenas modo de leitura, não sendo possível editar, excluir e criar um novo contato.
 
 # Configuração do Vue
 ## Project setup
