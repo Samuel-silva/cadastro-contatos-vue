@@ -205,8 +205,10 @@
         hideHeaderClose
         noCloseOnEsc
       >
-        <p v-if="errorSaving" v-html="txtModalFinishedError" />
-        <p v-else v-html="txtModalFinishedSuccess" />
+        <b-alert :variant="errorSaving ? 'danger': 'success'" show>
+          <p v-if="errorSaving" v-html="txtModalFinishedError" />
+          <p v-else v-html="txtModalFinishedSuccess" />
+        </b-alert>
 
         <template #modal-footer>
           <b-button
@@ -234,7 +236,7 @@ import ApiContacts from '@/api/contacts'
 
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { mask } from 'vue-the-mask'
-import { BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
+import { BAlert, BButton, BCol, BForm, BModal, BRow, BSpinner } from 'bootstrap-vue'
 
 import BreadCrump from '@/components/BreadCrump'
 import FooterComponent from '@/components/FooterComponent'
@@ -245,6 +247,7 @@ export default {
   name: 'FormView',
 
   components: {
+    BAlert,
     BButton,
     BCol,
     BForm,
