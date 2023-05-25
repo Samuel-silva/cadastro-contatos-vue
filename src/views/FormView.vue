@@ -168,13 +168,13 @@
               </b-col>
               <b-col md="4">
                 <b-form-group
-                  id="input-group-8"
+                  id="input-group-10"
                   class="mt-3"
                   label="Estado:"
-                  label-for="input-8"
+                  label-for="input-10"
                 >
                   <b-form-input
-                    id="input-8"
+                    id="input-10"
                     v-model="form.state"
                     required
                   />
