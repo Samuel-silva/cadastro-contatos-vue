@@ -54,10 +54,10 @@
 			v-model="modalDelete"
 			hideHeaderClose
 		>
-			<b-alert v-if="deleteError" variant="danger" show>
-				<p>{{ txtModalDeleteError }}</p>
+			<b-alert v-if="deleteError" variant="danger" show class="mb-0">
+				<p class="mb-0">{{ txtModalDeleteError }}</p>
       </b-alert>
-			<p v-else>{{ txtModalDelete }}</p>
+			<p v-else class="mb-0">{{ txtModalDelete }}</p>
 
 			<template #modal-footer>
 				<b-button
