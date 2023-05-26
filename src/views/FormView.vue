@@ -205,9 +205,10 @@
         hideHeaderClose
         noCloseOnEsc
       >
-        <b-alert :variant="errorSaving ? 'danger': 'success'" show>
-          <p v-if="errorSaving" v-html="txtModalFinishedError" />
-          <p v-else v-html="txtModalFinishedSuccess" />
+        <b-alert :variant="errorSaving ? 'danger': 'success'" show class="mb-0">
+          <p class="mb-0">
+            <span v-html="errorSaving ? txtModalFinishedError : txtModalFinishedSuccess" />
+          </p>
         </b-alert>
 
         <template #modal-footer>
