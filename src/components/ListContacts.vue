@@ -54,7 +54,9 @@
 			v-model="modalDelete"
 			hideHeaderClose
 		>
-			<p v-if="deleteError">{{ txtModalDeleteError }}</p>
+			<b-alert v-if="deleteError" variant="danger" show>
+				<p>{{ txtModalDeleteError }}</p>
+      </b-alert>
 			<p v-else>{{ txtModalDelete }}</p>
 
 			<template #modal-footer>
@@ -88,7 +90,7 @@
 import ApiContacts from '@/api/contacts'
 
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { BButton, BIcon, BListGroup, BModal, BSkeleton, VBTooltip } from 'bootstrap-vue'
+import { BAlert, BButton, BIcon, BListGroup, BModal, BSkeleton, VBTooltip } from 'bootstrap-vue'
 
 const ModalDetails = () => import('./ModalDetails.vue');
 const NotFoundContacts = () => import('./NotFoundContacts.vue');
@@ -97,6 +99,7 @@ export default {
 	name: 'ListContacts',
 
   components: {
+		BAlert,
 		BButton,
 		BIcon,
 		BListGroup,
