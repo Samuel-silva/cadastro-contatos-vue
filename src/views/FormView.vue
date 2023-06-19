@@ -244,6 +244,21 @@ import FooterComponent from '@/components/FooterComponent'
 import HeaderComponent from '@/components/HeaderComponent'
 import MainComponent from '@/components/MainComponent'
 
+function initialForm() {
+  return {
+    name: '',
+    email: '',
+    phone: '',
+    zipCode: '',
+    number: '',
+    address: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    state: ''
+  }
+}
+
 export default {
   name: 'FormView',
 
@@ -266,18 +281,7 @@ export default {
   data() {
     return {
       errorSaving: false,
-      form: {
-        name: '',
-        email: '',
-        phone: '',
-        zipCode: '',
-        number: '',
-        address: '',
-        complement: '',
-        neighborhood: '',
-        city: '',
-        state: '',
-      },
+      form: initialForm(),
       inputZipCodeError: false,
       loadingDataContact: false,
       modalFinished: false,
@@ -334,8 +338,8 @@ export default {
     ...mapActions(['getAllContacts']),
 
     clearForm() {
-      const objClear = Object.keys(this.form).reduce((acc, curr) => ({...acc, [curr]: ""}), {});
-      this.form = objClear;
+      // const objClear = Object.keys(this.form).reduce((acc, curr) => ({...acc, [curr]: ""}), {});
+      this.form = initialForm();
     },
 
     async createNewContact(form) {
@@ -407,7 +411,8 @@ export default {
               this.showModal(this.txtModalNotFound);
             } else {
               const { logradouro: address, bairro: neighborhood, localidade: city, uf: state } = resp.data;
-              Object.assign(this.form, { address, neighborhood, city, state });
+              // Object.assign(this.form, { address, neighborhood, city, state });
+              this.form = {...this.form, address, neighborhood, city, state};
             }
           })
           .catch(() => {
