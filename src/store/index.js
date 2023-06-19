@@ -9,20 +9,17 @@ const state = {
   contactsErrorApi: false,
   listLoading: true,
 }
+
 const getters = {
   namesList(state) {
     const { contacts } = state;
 
-    const names = [];
-    contacts.forEach(function(contact) {
-      const {id, name} = contact
-      names.push({
-        id,
-        name
-      })
-    })
+    const names = contacts.reduce((namesArray, contact) => {
+      const {id, name} = contact;
+      return [...namesArray, {id, name}];
+    }, []);
 
-    return names
+    return names;
   },
 
   detailContact: (state) => (id) => {
@@ -30,6 +27,7 @@ const getters = {
     return detail[0];
   },
 }
+
 const mutations = {
   SET_CONTACTS(state, payload) {
     state.contacts = payload;
@@ -43,6 +41,7 @@ const mutations = {
     state.contactsErrorApi = payload;
   },
 }
+
 const actions = {
   getAllContacts: async ({ commit }) => {
     commit('SET_CONTACTS_ERROR_API', false);
