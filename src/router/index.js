@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+const HomeView = () => import(/* webpackChunkName: "HomeView" */ '../views/HomeView')
 const NotFount = () => import(/* webpackChunkName: "NotFound" */ '../views/PageNotFound')
 const FormView = () => import(/* webpackChunkName: "FormView" */ '../views/FormView')
 
